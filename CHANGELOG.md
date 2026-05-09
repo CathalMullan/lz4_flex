@@ -1,3 +1,17 @@
+0.13.1 (2026-05-09)
+==================
+### Fixes
+- Fix compression with short dictionaries (less than 4 bytes), avoiding a panic/out-of-bounds read [#222](https://github.com/PSeitz/lz4_flex/issues/222) 
+```
+Compression with dictionaries shorter than the minimum match length of 4 now falls
+back to compression without a dictionary instead of panicking or reading past
+the dictionary. 
+
+This is a security fix for `unsafe` compression with untrusted dictionaries. 
+Users on 0.13.0 should upgrade to 0.13.1.
+```
+- Fix panic in `From<io::Error>` implementation for `frame::Error` [#221](https://github.com/PSeitz/lz4_flex/issues/221)  (thanks @phoerious)
+
 0.13.0 (2026-03-15)
 ==================
 ### Features
@@ -15,6 +29,19 @@ that was also backported to 0.12.1 and 0.11.6.
 Cast input_len to u64 before multiplying by 110, avoiding overflow on
 32-bit targets (e.g. wasm32) where input_len * 110 overflows usize
 when input_len > ~39MB.
+```
+
+0.12.2 (2026-05-09)
+==================
+### Fixes
+- Fix compression with short dictionaries (less than 4 bytes), avoiding a panic/out-of-bounds read [#222](https://github.com/PSeitz/lz4_flex/issues/222) 
+```
+Compression with dictionaries shorter than the minimum match length of 4 now falls
+back to compression without a dictionary instead of panicking or reading past
+the dictionary. 
+
+This is a security fix for `unsafe` compression with untrusted dictionaries. 
+Users on 0.12.1 should upgrade to 0.12.2.
 ```
 
 0.12.1 (2026-03-14)
