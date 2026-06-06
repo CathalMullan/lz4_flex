@@ -217,7 +217,7 @@ pub(crate) fn decompress_internal<const USE_DICT: bool, S: Sink>(
     };
     let output_base = unsafe { output.base_mut_ptr() };
     let output_end = unsafe { output_base.add(output.capacity()) };
-    let output_start_pos_ptr = unsafe { output.base_mut_ptr().add(output.pos()) as *mut u8 };
+    let output_start_pos_ptr = unsafe { output.base_mut_ptr().add(output.pos()) };
     let mut output_ptr = output_start_pos_ptr;
 
     let mut input_ptr = input.as_ptr();
@@ -336,7 +336,7 @@ pub(crate) fn decompress_internal<const USE_DICT: bool, S: Sink>(
             if literal_length == 15 {
                 // The literal_length length took the maximal value, indicating that there is more
                 // than 15 literal_length bytes. We read the extra integer.
-                literal_length += read_integer_ptr(&mut input_ptr, input_ptr_end)? as usize;
+                literal_length += read_integer_ptr(&mut input_ptr, input_ptr_end)?;
             }
 
             // could be skipped with unchecked-decode
@@ -387,7 +387,7 @@ pub(crate) fn decompress_internal<const USE_DICT: bool, S: Sink>(
         if match_length == MINMATCH + 15 {
             // The match length took the maximal value, indicating that there is more bytes. We
             // read the extra integer.
-            match_length += read_integer_ptr(&mut input_ptr, input_ptr_end)? as usize;
+            match_length += read_integer_ptr(&mut input_ptr, input_ptr_end)?;
         }
 
         // We now copy from the already decompressed buffer. This allows us for storing duplicates
@@ -473,7 +473,6 @@ pub fn decompress_into_with_dict(
 /// # Panics
 /// May panic if the parameter `min_uncompressed_size` is smaller than the
 /// uncompressed data.
-
 #[inline]
 pub fn decompress_with_dict(
     input: &[u8],

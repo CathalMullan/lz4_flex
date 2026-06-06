@@ -10,7 +10,7 @@
 //!
 //! ## Double Copy Trick
 //! `fastcpy` employs a double copy trick to copy slices of length 4-32bytes (64bytes with `avx`).
-//! E.g. Slice of length 6 can be copied with two uncoditional copy operations.
+//! E.g. Slice of length 6 can be copied with two unconditional copy operations.
 //!
 //! /// [1, 2, 3, 4, 5, 6]
 //! /// [1, 2, 3, 4]
